@@ -6,7 +6,6 @@ import { HeaderContainer } from "./containers/headerContainer/headerContainer.co
 
 import { MyContext } from './app.context'
 import { GROUP_BY, ORDER_BY } from "./testing.constant";
-import { fetchData } from "./components/utils";
 
 function App() {
 
@@ -16,12 +15,16 @@ function App() {
   const [groupBy, setGroupBy] = useState(GROUP_BY.STATUS)
   const [orderBy, setOrderBy] = useState(ORDER_BY.PRIORITY)
 
-  
+  async function fetchData() {
+    const response = await fetch("https://api.quicksell.co/v1/internal/frontend-assignment");
+    const data = await response.json();
+    setTickets(data.tickets)
+    setUsers(data.users)
+  }
+
   useEffect(() => {
     if (tickets.length === 0 || users.length === 0) {
-     const data =  fetchData();
-      setTickets(data.tickets)
-    setUsers(data.users)
+      fetchData();
     }
   }, [tickets.length, users.length])
 
